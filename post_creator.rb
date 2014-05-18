@@ -8,9 +8,6 @@ class PostCreator
     end
 
     def extract_title(doc)
-      # doc.search('title > a').map do |element|
-      #   element.inner_text
-      # end
       doc.search('.title > a').inner_text
     end
 

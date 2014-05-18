@@ -13,9 +13,4 @@ post.comment_arr = CommentCreator.create_comment_arr(doc)
 
 puts "Post title: #{post.title}"
 puts "Number of comments: #{post.comment_arr.length}"
-
-# $ ruby hn_scraper.rb https://news.ycombinator.com/item?id=5003980
-# Post title: XXXXXX
-# Number of comments: XXXXX
-# ... some other statistics we might be interested in -- your choice ...
-# $
+puts "Most recent comment: #{post.comment_arr[0].formated_date}"

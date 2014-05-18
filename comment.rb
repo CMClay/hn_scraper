@@ -6,4 +6,8 @@ class Comment
     @date = date
     @content = content
   end
+
+  def formated_date
+    @date.strftime('%B %d, %Y')
+  end
 end
