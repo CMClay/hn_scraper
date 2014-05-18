@@ -1,57 +1,21 @@
 require 'open-uri'
 require 'nokogiri'
 require_relative 'post'
+require_relative 'comment_creator'
+require_relative 'post_creator'
 
 doc = Nokogiri::HTML(File.open('post.html'))
 
-
-def extract_title(doc)
-  doc.search('title').map do |element|
-    element.inner_text
-  end
-end
-
-def extract_comment_content(doc)
-  doc.search('.comment')
-end
-
-def extract_usernames(doc)
-  doc.search('.comhead > a:first-child').map do |element|
-    element.inner_text
-  end
-end
-
-def extract_comment_dates(doc)
-  dates_arr = doc.search('.comhead').map do |element|
-    element.inner_text.split(" ").slice(1,2)
-  end
-  return dates_arr.slice(1..-1)
-end
-
-def extract_points(doc)
-  string = doc.search('.subtext').inner_text
-  points = string.split(" ")[0].to_i
-end
-
-title = extract_title(doc)
 url = ARGV[0]
-points = extract_points(doc)
-item_id = url.split("=")[-1].to_i
+post = PostCreator.create_post(doc, url)
 
-post = Post.new(title, url, points, item_id)
+post.comment_arr = CommentCreator.create_comment_arr(doc)
 
-# puts comments.length
-# puts extract_comment_content(doc).length
+puts "Post title: #{post.title}"
+puts "Number of comments: #{post.comment_arr.length}"
 
-def test(doc)
-  doc.search('.comhead')[1].inner_text
-end
-
- p extract_comment_dates(doc)
-
-
-
-# puts test(doc)
-
-
-
+# $ ruby hn_scraper.rb https://news.ycombinator.com/item?id=5003980
+# Post title: XXXXXX
+# Number of comments: XXXXX
+# ... some other statistics we might be interested in -- your choice ...
+# $
